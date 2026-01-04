@@ -13,7 +13,9 @@ WARNING:
     All data in the database will be permanently deleted. Proceed with caution
     and ensure you have proper backups before running this script.
 */
-
+-- Use Master
+use master;
+Go
 -- Drop and Recreate the Database 
 
 if exists (select * from sys.databases where name = "Analysis")
