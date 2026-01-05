@@ -1,1 +1,14 @@
+use Analysis;
+select count(*) as total_count  --To Count the data After filtering 
+from (
+select 
+cid , bdate ,
+case 
+when upper(trim(gen)) in ('M' , 'Male') then 'Male'
+when upper(trim(gen)) in ('F' , 'Female') then 'Female'
+else 'N/A'
+end as gen
+from bronze.erp_cust_az12
+where year(bdate) < 2026-01-01) as t   --Filtering the data to remove invalid values 
+
 
