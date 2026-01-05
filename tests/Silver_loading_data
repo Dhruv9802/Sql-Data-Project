@@ -1,0 +1,23 @@
+use analysis;
+select 
+cst_id,
+cst_key,
+trim(cst_firstname) as cst_firstname,
+trim(cst_lastname) as cst_lastname,
+case
+when Upper(trim(cst_marital_status)) = 'S' then 'Single'
+when Upper(trim(cst_marital_status))  = 'M' then 'Married'
+Else 'N/A'
+End as cst_martial_status,
+case
+when Upper(trim(cst_gndr)) = 'M' then 'Male'
+when Upper(trim(cst_gndr)) = 'F' then 'Female'
+else 'N/A'
+End as cst_gndr,
+cst_create_date
+from ( select *,
+row_number() over (partition by cst_id order by cst_create_date) as rank_value
+from bronze.crm_cust_info) as t
+where rank_value = 1;
+
+
