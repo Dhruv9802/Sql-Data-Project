@@ -1,0 +1,89 @@
+create or alter procedure Bronze.Main_Bronze as
+begin
+	declare @start_time Datetime , @End_time Datetime;
+begin try
+print '==================================';
+print 'Loading Bronze Layer';
+print '==================================';
+
+print '==================================';
+print 'Loading CRM Tables';
+print '==================================';
+SET @start_time = GETDATE();
+Print 'Truncating Table: bronze.crm_cust_info';
+Truncate TABLE bronze.crm_cust_info;
+
+Print 'Inserting Table:bronze.crm_cust_info';
+bulk insert bronze.crm_cust_info
+from 'D:\Projects\SQL\source_crm\cust_info.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',',
+	tablock
+);
+SET @start_time = GETDATE();
+Print 'Truncating Table: bronze.crm_prd_info'
+Truncate Table bronze.crm_prd_info
+Print 'Inserting Table:bronze.crm_prd_info';
+bulk insert bronze.crm_prd_info 
+from 'D:\Projects\SQL\source_crm\prd_info.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',',
+	tablock
+);
+SET @start_time = GETDATE();
+Print 'Truncating Table: bronze.crm_Sales_details'
+Truncate table bronze.crm_Sales_details;
+Print 'Inserting Table: bronze.crm_Sales_details'
+bulk insert bronze.crm_Sales_details
+from 'D:\Projects\SQL\source_crm\sales_details.csv'
+with (
+		firstrow = 2,
+		fieldterminator = ',',
+		tablock
+		);
+SET @start_time = GETDATE();
+PRINT 'Truncating Table: bronze.erp_cust_az12'
+Truncate table bronze.erp_cust_az12;
+Print 'Inserting Table: bronze.erp_cust_az12'
+Bulk insert bronze.erp_cust_az12 
+from 'D:\Projects\SQL\source_erp\CUST_AZ12.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',',
+	tablock
+);
+SET @start_time = GETDATE();
+PRINT 'Truncating Table:bronze.erp_loc_a101'
+TRUNCATE TABLE bronze.erp_loc_a101;
+Print 'Inserting Table:	bronze.erp_loc_a101'
+BULK INSERT bronze.erp_loc_a101
+FROM 'D:\Projects\SQL\source_erp\LOC_A101.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+SET @start_time = GETDATE();
+PRINT 'Truncating Table: bronze.erp_px_cat_g1v2'
+TRUNCATE TABLE bronze.erp_px_cat_g1v2;
+Print 'Inserting Table:	bronze.erp_px_cat_g1v2'
+BULK INSERT bronze.erp_px_cat_g1v2
+FROM 'D:\Projects\SQL\source_erp\PX_CAT_G1V2.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+SET @End_time = GETDATE();
+End Try 
+Begin Catch
+END Catch
+End
+
+
+
+
+
+
