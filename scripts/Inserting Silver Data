@@ -1,1 +1,112 @@
+/*
+================================================================================
+Stored Procedure: Load Silver Layer (Source -> Silver)
+================================================================================
+
+Script Purpose:
+    This stored procedure loads data into the 'Silver' schema from external CSV files.
+    It performs the following actions:
+    - Truncates the Silver tables before loading data.
+    - Uses the 'BULK INSERT' command to load data from CSV files to Silver tables.
+
+Parameters:
+    None.
+    This stored procedure does not accept any parameters or return any values.
+
+Usage Example:
+    EXEC Silver.load_Silver;
+
+================================================================================
+*/
+
+
+
+create or alter procedure silver.Main_silver as
+begin
+	declare @start_time Datetime , @End_time Datetime;
+begin try
+print '==================================';
+print 'Loading Bronze Layer';
+print '==================================';
+
+print '==================================';
+print 'Loading CRM Tables';
+print '==================================';
+SET @start_time = GETDATE();
+Print 'Truncating Table: silver.crm_cust_info';
+Truncate TABLE silver.crm_cust_info;
+
+Print 'Inserting Table:silver.crm_cust_info';
+bulk insert silver.crm_cust_info
+from 'D:\Projects\SQL\source_crm\cust_info.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',',
+	tablock
+);
+SET @start_time = GETDATE();
+Print 'Truncating Table: silver.crm_prd_info'
+Truncate Table silver.crm_prd_info
+Print 'Inserting Table:silver.crm_prd_info';
+bulk insert silver.crm_prd_info 
+from 'D:\Projects\SQL\source_crm\prd_info.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',',
+	tablock
+);
+SET @start_time = GETDATE();
+Print 'Truncating Table: silver.crm_Sales_details'
+Truncate table silver.crm_Sales_details;
+Print 'Inserting Table: silver.crm_Sales_details'
+bulk insert silver.crm_Sales_details
+from 'D:\Projects\SQL\source_crm\sales_details.csv'
+with (
+		firstrow = 2,
+		fieldterminator = ',',
+		tablock
+		);
+SET @start_time = GETDATE();
+PRINT 'Truncating Table: silver.erp_cust_az12'
+Truncate table silver.erp_cust_az12;
+Print 'Inserting Table: silver.erp_cust_az12'
+Bulk insert silver.erp_cust_az12 
+from 'D:\Projects\SQL\source_erp\CUST_AZ12.csv'
+with (
+	firstrow = 2,
+	fieldterminator = ',',
+	tablock
+);
+SET @start_time = GETDATE();
+PRINT 'Truncating Table: silver.erp_loc_a101'
+TRUNCATE TABLE silver.erp_loc_a101;
+Print 'Inserting Table:	silver.erp_loc_a101'
+BULK INSERT silver.erp_loc_a101
+FROM 'D:\Projects\SQL\source_erp\LOC_A101.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+SET @start_time = GETDATE();
+PRINT 'Truncating Table: silver.erp_px_cat_g1v2'
+TRUNCATE TABLE silver.erp_px_cat_g1v2;
+Print 'Inserting Table:	silver.erp_px_cat_g1v2'
+BULK INSERT silver.erp_px_cat_g1v2
+FROM 'D:\Projects\SQL\source_erp\PX_CAT_G1V2.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+SET @End_time = GETDATE();
+End Try 
+Begin Catch
+END Catch
+End
+
+
+
+
+
 
